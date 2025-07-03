@@ -147,12 +147,12 @@ export default function TrackPage() {
                       <h3 className="font-bold mb-4 text-lg">Live Location</h3>
                       <div className="aspect-video rounded-lg overflow-hidden border">
                         <Image
-                          src="https://placehold.co/600x400/F0F8FF/29ABE2?text=Map+Placeholder"
+                          src={`https://staticmap.openstreetmap.de/staticmap.php?center=${parcel.currentLocation.lat},${parcel.currentLocation.lng}&zoom=13&size=600x400&maptype=mapnik&markers=${parcel.currentLocation.lat},${parcel.currentLocation.lng},ltblu-pushpin`}
                           alt="Map showing parcel location"
                           width={600}
                           height={400}
                           className="w-full h-full object-cover"
-                          data-ai-hint="world map"
+                          data-ai-hint="city map"
                         />
                       </div>
                       <p className="text-sm text-muted-foreground mt-2">Current Location: Near {parcel.history[parcel.history.length-1].location}</p>
