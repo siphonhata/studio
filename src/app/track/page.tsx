@@ -1,26 +1,30 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Package,
   Truck,
-  MapPin,
   Home,
   CheckCircle2,
   XCircle,
   Search,
-  ChevronRight,
 } from 'lucide-react';
 
-import type { Parcel, ParcelEvent, ParcelStatus } from '@/lib/types';
+import type { Parcel, ParcelStatus } from '@/lib/types';
 import { mockParcels } from '@/lib/mock-data';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Logo from '@/components/logo';
+import { Skeleton } from '@/components/ui/skeleton';
+
+const LeafletMap = dynamic(() => import('@/components/leaflet-map'), {
+  ssr: false,
+  loading: () => <Skeleton className="w-full h-full" />,
+});
 
 const statusIcons: { [key in ParcelStatus]: React.ElementType } = {
   Ordered: Package,
@@ -146,14 +150,7 @@ export default function TrackPage() {
                     <div>
                       <h3 className="font-bold mb-4 text-lg">Live Location</h3>
                       <div className="aspect-video rounded-lg overflow-hidden border">
-                        <Image
-                          src={`https://staticmap.openstreetmap.de/staticmap.php?center=${parcel.currentLocation.lat},${parcel.currentLocation.lng}&zoom=13&size=600x400&maptype=mapnik&markers=${parcel.currentLocation.lat},${parcel.currentLocation.lng},ltblu-pushpin`}
-                          alt="Map showing parcel location"
-                          width={600}
-                          height={400}
-                          className="w-full h-full object-cover"
-                          data-ai-hint="city map"
-                        />
+                        <LeafletMap lat={parcel.currentLocation.lat} lng={parcel.currentLocation.lng} />
                       </div>
                       <p className="text-sm text-muted-foreground mt-2">Current Location: Near {parcel.history[parcel.history.length-1].location}</p>
                     </div>
