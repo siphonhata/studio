@@ -43,7 +43,7 @@ export default function AdminLoginPage() {
             <CardFooter className="flex flex-col gap-4">
               <Button type="submit" className="w-full bg-accent hover:bg-accent/90">Login</Button>
               <Button variant="link" asChild className="p-0">
-                <Link href="/">Back to Home</Link>
+                <Link href="/home">Back to Home</Link>
               </Button>
             </CardFooter>
           </form>

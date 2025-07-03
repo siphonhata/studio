@@ -93,7 +93,7 @@ export default function DashboardLayout({
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
                <DropdownMenuItem asChild>
-                 <Link href="/">Logout</Link>
+                 <Link href="/home">Logout</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
