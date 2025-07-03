@@ -150,7 +150,7 @@ export default function TrackPage() {
                     <div>
                       <h3 className="font-bold mb-4 text-lg">Live Location</h3>
                       <div className="aspect-video rounded-lg overflow-hidden border">
-                        <LeafletMap lat={parcel.currentLocation.lat} lng={parcel.currentLocation.lng} />
+                        <LeafletMap key={parcel.trackingId} lat={parcel.currentLocation.lat} lng={parcel.currentLocation.lng} />
                       </div>
                       <p className="text-sm text-muted-foreground mt-2">Current Location: Near {parcel.history[parcel.history.length-1].location}</p>
                     </div>
