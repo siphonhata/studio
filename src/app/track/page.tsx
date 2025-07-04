@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -20,6 +20,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import Logo from '@/components/logo';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useSearchParams } from 'next/navigation';
 
 const LeafletMap = dynamic(() => import('@/components/leaflet-map'), {
   ssr: false,
@@ -45,14 +46,15 @@ const statusColors: { [key in ParcelStatus]: string } = {
 };
 
 export default function TrackPage() {
+  const searchParams = useSearchParams();
   const [trackingId, setTrackingId] = useState('');
   const [parcel, setParcel] = useState<Parcel | null>(null);
   const [error, setError] = useState('');
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
+  const searchParcel = (id: string) => {
+    if (!id) return;
     setError('');
-    const foundParcel = mockParcels.find((p) => p.trackingId.toLowerCase() === trackingId.toLowerCase());
+    const foundParcel = mockParcels.find((p) => p.trackingId.toLowerCase() === id.toLowerCase());
     if (foundParcel) {
       setParcel(foundParcel);
     } else {
@@ -61,12 +63,26 @@ export default function TrackPage() {
     }
   };
 
+  useEffect(() => {
+    const idFromQuery = searchParams.get('id');
+    if (idFromQuery) {
+      setTrackingId(idFromQuery);
+      searchParcel(idFromQuery);
+    }
+  }, [searchParams]);
+
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    searchParcel(trackingId);
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
        <header className="p-4 border-b flex justify-between items-center">
         <Logo />
         <Button variant="outline" asChild>
-          <Link href="/admin/login">Admin Portal</Link>
+          <Link href="/home">Home</Link>
         </Button>
       </header>
       <main className="flex-1 p-4 md:p-8">
