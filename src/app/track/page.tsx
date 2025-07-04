@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Package,
@@ -19,13 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Logo from '@/components/logo';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useSearchParams } from 'next/navigation';
-
-const LeafletMap = dynamic(() => import('@/components/leaflet-map'), {
-  ssr: false,
-  loading: () => <Skeleton className="w-full h-full" />,
-});
 
 const statusIcons: { [key in ParcelStatus]: React.ElementType } = {
   Ordered: Package,
@@ -134,7 +127,7 @@ export default function TrackPage() {
                       </Badge>
                     </div>
                   </CardHeader>
-                  <CardContent className="grid md:grid-cols-2 gap-8">
+                  <CardContent>
                     <div>
                       <h3 className="font-bold mb-4 text-lg">Delivery Timeline</h3>
                       <div className="relative pl-4">
@@ -162,13 +155,6 @@ export default function TrackPage() {
                           );
                         })}
                       </div>
-                    </div>
-                    <div>
-                      <h3 className="font-bold mb-4 text-lg">Live Location</h3>
-                      <div className="aspect-video rounded-lg overflow-hidden border">
-                        <LeafletMap key={parcel.trackingId} lat={parcel.currentLocation.lat} lng={parcel.currentLocation.lng} />
-                      </div>
-                      <p className="text-sm text-muted-foreground mt-2">Current Location: Near {parcel.history[parcel.history.length-1].location}</p>
                     </div>
                   </CardContent>
                 </Card>
