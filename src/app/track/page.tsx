@@ -44,8 +44,8 @@ export default function TrackPage() {
   const [parcel, setParcel] = useState<Parcel | null>(null);
   const [error, setError] = useState('');
 
-  const LeafletMap = useMemo(() => dynamic(
-    () => import('@/components/leaflet-map'),
+  const MapboxMap = useMemo(() => dynamic(
+    () => import('@/components/mapbox-map'),
     { 
       loading: () => <div className="h-[400px] w-full bg-muted rounded-lg animate-pulse" />,
       ssr: false
@@ -165,7 +165,7 @@ export default function TrackPage() {
                       </div>
                     </div>
                      <div className="h-[25rem] md:h-auto">
-                      <LeafletMap 
+                      <MapboxMap 
                         key={parcel.id}
                         lat={parcel.currentLocation.lat} 
                         lng={parcel.currentLocation.lng} 
