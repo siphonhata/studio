@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -10,7 +10,7 @@ import {
   XCircle,
   Search,
 } from 'lucide-react';
-
+import dynamic from 'next/dynamic';
 import type { Parcel, ParcelStatus } from '@/lib/types';
 import { mockParcels } from '@/lib/mock-data';
 import { Button } from '@/components/ui/button';
@@ -43,6 +43,14 @@ export default function TrackPage() {
   const [trackingId, setTrackingId] = useState('');
   const [parcel, setParcel] = useState<Parcel | null>(null);
   const [error, setError] = useState('');
+
+  const LeafletMap = useMemo(() => dynamic(
+    () => import('@/components/leaflet-map'),
+    { 
+      loading: () => <div className="h-[400px] w-full bg-muted rounded-lg animate-pulse" />,
+      ssr: false
+    }
+  ), []);
 
   const searchParcel = (id: string) => {
     if (!id) return;
@@ -127,7 +135,7 @@ export default function TrackPage() {
                       </Badge>
                     </div>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="grid gap-6 md:grid-cols-2">
                     <div>
                       <h3 className="font-bold mb-4 text-lg">Delivery Timeline</h3>
                       <div className="relative pl-4">
@@ -155,6 +163,13 @@ export default function TrackPage() {
                           );
                         })}
                       </div>
+                    </div>
+                     <div className="h-[25rem] md:h-auto">
+                      <LeafletMap 
+                        key={parcel.id}
+                        lat={parcel.currentLocation.lat} 
+                        lng={parcel.currentLocation.lng} 
+                      />
                     </div>
                   </CardContent>
                 </Card>
